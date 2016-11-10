@@ -5,9 +5,8 @@ export default class App extends Component {
     return (
 			<div>
 				<input type="text" />
-				<h1>Hello, world! tf</h1>
+				<h1>Hello, world!</h1>
 			</div>
-      
     );
   }
 }
