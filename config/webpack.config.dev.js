@@ -1,11 +1,13 @@
 var path = require('path');
 var webpack = require('webpack');
+var fs = require('fs');
+var paths = require('./paths');
 
 module.exports = {
   devtool: 'eval',
   entry: [
     'webpack-hot-middleware/client',
-    './src/index'
+    require.resolve('../src/index')
   ],
   output: {
     path: path.join(__dirname, 'dist'),
@@ -17,9 +19,9 @@ module.exports = {
   ],
   module: {
     loaders: [{
-      test: /\.js$/,
+      test: /\.(js|jsx)$/,
       loaders: ['react-hot', 'babel'],
-      include: path.join(__dirname, 'src')
+      include: paths.appSrc,
     }]
   }
 };
