@@ -2,6 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 var fs = require('fs');
 var combineLoaders = require('webpack-combine-loaders');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var ManifestPlugin = require('webpack-manifest-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var cssnext = require('postcss-cssnext');
 var postcssFocus = require('postcss-focus');
@@ -22,16 +24,24 @@ var publicUrl = '';
 var env = getClientEnvironment(publicUrl);
 
 module.exports = {
-  devtool: 'eval',
+  bail: true,
+  devtool: 'source-map',
   entry: {
     bundle : [
-      'webpack-hot-middleware/client',
-      require.resolve('../src/index')
+      require.resolve('./polyfills'),
+      paths.appIndexJs
     ]
   },
+
   output: {
+    // The build folder.
     path: paths.appBuild,
-    filename: 'scripts/[name].js',
+    // Generated JS file names (with nested folders).
+    // There will be one main bundle, and one file per asynchronous chunk.
+    // We don't currently advertise code splitting but Webpack supports it.
+    filename: 'scripts/[name].[chunkhash:8].js',
+    chunkFilename: 'scripts/[name].[chunkhash:8].chunk.js',
+    // We inferred the "public path" (such as / or /my-project) from homepage.
     publicPath: publicPath
   },
   module: {
@@ -45,28 +55,26 @@ module.exports = {
     loaders: [
       {
         test: /\.(js|jsx)$/,
-        loaders: ['react-hot', 'babel'],
+        loader: 'babel',
         include: paths.appSrc,
       },
       {
         test: /\.css$/,
-        loader: combineLoaders([
-          {
-            loader: 'style-loader'
-          }, 
-          {
-            loader: 'css-loader',
-            query: {
-              modules: true,
-              localIdentName: '[name]__[local]___[hash:base64:5]',
-              importLoaders: 1,
-              sourceMap : 1
+        loader: ExtractTextPlugin.extract(
+          'style-loader',
+          combineLoaders([
+            {
+              loader: 'css-loader',
+              query: {
+                modules: true,
+                localIdentName: '[name]__[local]___[hash:base64:5]'
+              }
+            },
+            {
+              loader : 'postcss-loader'
             }
-          },
-          {
-            loader : 'postcss-loader'
-          }
-        ])
+          ])
+        )
       },
       {
         test: /\.json$/,
@@ -92,12 +100,30 @@ module.exports = {
     ]
   },
   plugins: [
+    
     new HtmlWebpackPlugin({
       inject : 'body',
       template : paths.appHtml
     }),
     new webpack.DefinePlugin(env),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        screw_ie8: true, // React doesn't support IE8
+        warnings: false
+      },
+      mangle: {
+        screw_ie8: true
+      },
+      output: {
+        comments: false,
+        screw_ie8: true
+      },
+
+    }),
+		new ExtractTextPlugin('css/[name].[contenthash:8].css'),
+		new ManifestPlugin({
+			fileName: 'asset-manifest.json'
+		}),
   ],
   // We use PostCSS for autoprefixing only.
 	// w = webpack
