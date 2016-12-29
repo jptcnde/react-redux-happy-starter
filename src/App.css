@@ -1,0 +1,38 @@
+/*
+  Global CSS file
+*/
+@import "normalize.css";
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+*{
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  line-height: normal;
+}
+:root {
+  placeholder {
+    color:#aaa;
+    font-weight: 300;
+  }
+}
+
+body {
+  background: #FFF;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+
+}
+
+h1 {font-size:  112px;}
+h2 {font-size:  56px;}
+h3 {font-size:  45px;}
+h4 {font-size:  34px;}
+h5 {font-size:  24px;}
+h6 {font-size:  20px;}
+
+button {
+  font-size: 14px;
+}

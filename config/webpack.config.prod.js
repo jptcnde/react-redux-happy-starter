@@ -9,6 +9,7 @@ var cssnext = require('postcss-cssnext');
 var postcssFocus = require('postcss-focus');
 var postcssReporter = require('postcss-reporter');
 var postcssImport = require('postcss-import');
+var DirectoryNamedWebpackPlugin = require("directory-named-webpack-plugin");
 var paths = require('./paths');
 var getClientEnvironment = require('./env');
 
@@ -100,7 +101,7 @@ module.exports = {
     ]
   },
   plugins: [
-    
+    new webpack.ResolverPlugin(new DirectoryNamedWebpackPlugin({honorIndex : true})),
     new HtmlWebpackPlugin({
       inject : 'body',
       template : paths.appHtml
@@ -123,7 +124,7 @@ module.exports = {
 		new ExtractTextPlugin('css/[name].[contenthash:8].css'),
 		new ManifestPlugin({
 			fileName: 'asset-manifest.json'
-		}),
+		})
   ],
   // We use PostCSS for autoprefixing only.
 	// w = webpack

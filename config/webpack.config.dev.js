@@ -7,6 +7,8 @@ var cssnext = require('postcss-cssnext');
 var postcssFocus = require('postcss-focus');
 var postcssReporter = require('postcss-reporter');
 var postcssImport = require('postcss-import');
+var DirectoryNamedWebpackPlugin = require("directory-named-webpack-plugin");
+
 var paths = require('./paths');
 var getClientEnvironment = require('./env');
 
@@ -26,6 +28,9 @@ module.exports = {
   entry: {
     bundle : [
       'webpack-hot-middleware/client',
+      'webpack/hot/only-dev-server',
+      'react-hot-loader/patch',
+      require.resolve('./polyfills'),
       require.resolve('../src/index')
     ]
   },
@@ -45,7 +50,7 @@ module.exports = {
     loaders: [
       {
         test: /\.(js|jsx)$/,
-        loaders: ['react-hot', 'babel'],
+        loader: 'babel',
         include: paths.appSrc,
       },
       {
@@ -92,6 +97,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.ResolverPlugin(new DirectoryNamedWebpackPlugin({honorIndex : true})),
     new HtmlWebpackPlugin({
       inject : 'body',
       template : paths.appHtml

@@ -1,0 +1,29 @@
+.header {
+  box-shadow:
+    0 2px 4px -1px rgba(0,0,0,0.06),
+    0 4px 5px 0 rgba(0,0,0,0.06),
+    0 1px 10px 0 rgba(0,0,0,0.08);
+  transition: box-shadow 200ms ease-in-out;
+  background: #fff;
+  border-color: rgba(0,0,0,0.14);
+
+  color: rgba(0,0,0,0.54);
+  fill: rgba(0,0,0,0.54);
+  display: flex;
+  padding: 10px 20px;
+  min-height: 64px;
+  align-items: center;
+  align-content: center;
+}
+
+.banner {
+  font-size:  20px;
+}
+
+.content {
+  width: 100%;
+  max-width: 980px;
+  margin: auto;
+  padding: 64px 16px;
+  overflow: auto;
+}

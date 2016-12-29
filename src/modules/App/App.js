@@ -1,13 +1,22 @@
-import React, { Component } from 'react';
-import styles from './App.css';
-import logo from './logo.svg';
-export default class App extends Component {
+import React, { Component } from 'react'
+import { connect } from 'react-redux';
+import styles from './App.css'
+import Header from './components/Header'
+import { browserHistory } from 'react-router';
+export class App extends Component {
+	componentDidMount() {
+		browserHistory.push('/')
+	}
   render() {
     return (
 			<div>
-				<img src={logo} className="App-logo" alt="logo" />
-				<h1>Hello, world!</h1>
+				<Header />
+				{this.props.children}
 			</div>
     );
   }
 }
+
+
+
+export default connect()(App)
